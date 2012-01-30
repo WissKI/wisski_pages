@@ -1,0 +1,8 @@
+; $Id$
+name = WissKI Special Pages
+description = This module enables overwriting of standard-pages and standard-menu-items/structure
+core = 6.x
+version = 1.0
+package = "WissKI"
+dependencies[] = wisski
+dependencies[] = menu_per_role

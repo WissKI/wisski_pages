@@ -20,7 +20,7 @@ function wisski_pages_createWissKIContent() {
     '#collapsed' => FALSE,
     '#value' => wisski_pages_form_add_list($contents),
   );
-  if(module_exists("wisski_editor")) {
+  if(module_exists("wisski_editor") || module_exists('wisski_textmod')) {
     $form['wisskiTextContent'] = array(
       '#type' => 'fieldset',
       '#title' => t('WissKI Textbased Input'),
@@ -68,20 +68,49 @@ function wisski_pages_text_add_list($content) {
   
   if ($content) {
     $output = '<dl class="node-type-list">';
-    foreach ($content as $item) {
-
-      if(module_exists("menu_per_role")) {
-        if(is_null(_menu_per_role_access($item['mlid']))) {
+    // added by Martin Scholz
+    if (module_exists('wisski_textmod')) {
       
-          $output .= '<dt>'. l($item['link_title'], "node/add/individual/annotext/" . $gotIDs[$item['mlid']]) .'</dt>';
-          if(isset($gotIDs[$item['mlid']])) {
+      $model = wisski_textmod_get_model();
+      foreach ($content as $item) {
+        if (!isset($gotIDs[$item['mlid']])) continue;
+        $gid = $gotIDs[$item['mlid']];
+  
+        //if(module_exists("menu_per_role")) {
+        if(is_null(_menu_per_role_access($item['mlid']))) {
+          
+          // only make a link if we have appropriate path defs
+          // ie. if it's a text group or if there's a path to a text group
+          if (isset($model['groups'][$gid]) && (!empty($model['groups'][$gid]['text_class']) || !empty($model['groups'][$gid]['foreign_paths']))) {
+            $output .= '<dt>' . l($item['link_title'], "node/add/individual/by_text/" . $gid) . '</dt>';
             $result = db_query("SELECT * FROM {wisski_template} WHERE `id` = " . $gotIDs[$item['mlid']]);
             $arr = db_fetch_array($result);
-
             $output .= '<dd>'. filter_xss_admin($arr['description']) .'</dd>';
           }
-        }      
+
+        } 
+        //}
       }
+     
+
+    } else {
+
+      foreach ($content as $item) {
+  
+        if(module_exists("menu_per_role")) {
+          if(is_null(_menu_per_role_access($item['mlid']))) {
+        
+            $output .= '<dt>'. l($item['link_title'], "node/add/individual/annotext/" . $gotIDs[$item['mlid']]) .'</dt>';
+            if(isset($gotIDs[$item['mlid']])) {
+              $result = db_query("SELECT * FROM {wisski_template} WHERE `id` = " . $gotIDs[$item['mlid']]);
+              $arr = db_fetch_array($result);
+  
+              $output .= '<dd>'. filter_xss_admin($arr['description']) .'</dd>';
+            }
+          }      
+        }
+      }
+
     }
    
     $output .= '</dl>';
@@ -141,7 +170,7 @@ function wisski_pages_createContent() {
     '#collapsed' => FALSE,
     '#value' => wisski_pages_form_add_list($contents),
   );
-  if(module_exists("wisski_editor")) {
+  if(module_exists("wisski_editor") || module_exists('wisski_textmod')) {
     $form['wisskiTextContent'] = array(
       '#type' => 'fieldset',
       '#title' => t('WissKI Textbased Input'),

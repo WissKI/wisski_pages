@@ -47,7 +47,7 @@ function wisski_pages_form_add_list($content) {
           $output .= '<dt>'. l($item['link_title'], $item['href']) .'</dt>';
           if(isset($gotIDs[$item['mlid']])) {
 
-            $result = db_query("SELECT * FROM {wisski_template} WHERE \"id\" = " . $gotIDs[$item['mlid']]);
+            $result = db_query("SELECT * FROM {wisski_template} WHERE id = " . $gotIDs[$item['mlid']]);
             $arr = db_fetch_array($result);
 
             $output .= '<dd>'. filter_xss_admin($arr['description']) .'</dd>';
@@ -83,7 +83,7 @@ function wisski_pages_text_add_list($content) {
           // ie. if it's a text group or if there's a path to a text group
           if (isset($model['groups'][$gid]) && (!empty($model['groups'][$gid]['text_class']) || !empty($model['groups'][$gid]['foreign_paths']))) {
             $output .= '<dt>' . l($item['link_title'], "node/add/individual/by_text/" . $gid) . '</dt>';
-            $result = db_query("SELECT * FROM {wisski_template} WHERE \"id\" = " . $gotIDs[$item['mlid']]);
+            $result = db_query("SELECT * FROM {wisski_template} WHERE id = " . $gotIDs[$item['mlid']]);
 
             $arr = db_fetch_array($result);
             $output .= '<dd>'. filter_xss_admin($arr['description']) .'</dd>';
@@ -103,7 +103,7 @@ function wisski_pages_text_add_list($content) {
         
             $output .= '<dt>'. l($item['link_title'], "node/add/individual/annotext/" . $gotIDs[$item['mlid']]) .'</dt>';
             if(isset($gotIDs[$item['mlid']])) {
-              $result = db_query("SELECT * FROM {wisski_template} WHERE \"id\" = " . $gotIDs[$item['mlid']]);
+              $result = db_query("SELECT * FROM {wisski_template} WHERE id = " . $gotIDs[$item['mlid']]);
               $arr = db_fetch_array($result);
   
               $output .= '<dd>'. filter_xss_admin($arr['description']) .'</dd>';

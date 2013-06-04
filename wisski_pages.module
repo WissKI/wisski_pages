@@ -1,6 +1,5 @@
 <?php
 
-
 function wisski_pages_createWissKIContent() {
     
   $form = array();
@@ -231,4 +230,49 @@ function wisski_pages_menu() {
 
   return $items;  
 }
-                                  
+    
+function wisski_pages_form_alter(&$form, &$form_state, $form_id) {
+    
+  if($form_id == 'wisski_visualSettings') {
+    $buttons = $form['buttons'];
+    unset($form['buttons']);
+    $form[] = (wisski_pages_visualSettings());  
+    $form['buttons'] = $buttons;
+  }
+}                              
+
+/**
+ * Make visual settings available
+ *
+ * @author Mark Fichtner
+ *
+ */
+function wisski_pages_visualSettings() {
+  
+  $form = array ();
+
+  $form['wisski_pages_fieldset'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Pages Settings'),
+    '#weight' => 500,
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+
+  $form['wisski_pages_fieldset']['wisski_pages_create_fields'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Create using fields'),
+    '#description' => t('Show the fieldbased-section in the create menu?'),
+    '#default_value' => variable_get('wisski_pages_create_fields', 1),
+  );
+  
+    $form['wisski_pages_fieldset']['wisski_pages_create_text'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Create using texts'),
+    '#description' => t('Show the text-section in the create menu?'),
+    '#default_value' => variable_get('wisski_pages_create_text', 1),
+  );
+
+  return $form;
+
+}

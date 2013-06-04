@@ -13,14 +13,17 @@ function wisski_pages_createWissKIContent() {
   
   $contents = $oldlinks;
 
-  $form['wisskiFormContent'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('WissKI Fieldbased Input'),
-    '#collapsible' => TRUE,
-    '#collapsed' => FALSE,
-    '#value' => wisski_pages_form_add_list($contents),
-  );
-  if(module_exists("wisski_editor") || module_exists('wisski_textmod')) {
+  if(variable_get("wisski_pages_create_fields", 1)) {
+    $form['wisskiFormContent'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('WissKI Fieldbased Input'),
+      '#collapsible' => TRUE,
+      '#collapsed' => FALSE,
+      '#value' => wisski_pages_form_add_list($contents),
+    );
+  }
+
+  if((module_exists("wisski_editor") || module_exists('wisski_textmod')) && variable_get("wisski_pages_create_text", 1)) {
     $form['wisskiTextContent'] = array(
       '#type' => 'fieldset',
       '#title' => t('WissKI Textbased Input'),
@@ -163,15 +166,17 @@ function wisski_pages_createContent() {
   if($oldlinks)  
     $contents = $oldlinks;
 
+  if(variable_get("wisski_pages_create_fields", 1)) {
+    $form['wisskiFormContent'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('WissKI Fieldbased Input'),
+      '#collapsible' => TRUE,
+      '#collapsed' => FALSE,
+      '#value' => wisski_pages_form_add_list($contents),
+    );
+  }
   
-  $form['wisskiFormContent'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('WissKI Fieldbased Input'),
-    '#collapsible' => TRUE,
-    '#collapsed' => FALSE,
-    '#value' => wisski_pages_form_add_list($contents),
-  );
-  if(module_exists("wisski_editor") || module_exists('wisski_textmod')) {
+  if((module_exists("wisski_editor") || module_exists('wisski_textmod')) && variable_get("wisski_pages_create_text", 1)) {
     $form['wisskiTextContent'] = array(
       '#type' => 'fieldset',
       '#title' => t('WissKI Textbased Input'),

@@ -5,4 +5,3 @@ core = 6.x
 version = 1.0
 package = "WissKI"
 dependencies[] = wisski
-dependencies[] = menu_per_role

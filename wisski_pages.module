@@ -55,6 +55,15 @@ function wisski_pages_form_add_list($content) {
             $output .= '<dd>'. filter_xss_admin($arr['description']) .'</dd>';
           }
         }      
+      } else {
+        $output .= '<dt>'. l($item['link_title'], $item['href']) .'</dt>';
+        if(isset($gotIDs[$item['mlid']])) {
+
+          $result = db_query("SELECT * FROM {wisski_template} WHERE id = " . $gotIDs[$item['mlid']]);
+          $arr = db_fetch_array($result);
+
+          $output .= '<dd>'. filter_xss_admin($arr['description']) .'</dd>';
+        }
       }
     }   
     $output .= '</dl>';
@@ -111,6 +120,14 @@ function wisski_pages_text_add_list($content) {
               $output .= '<dd>'. filter_xss_admin($arr['description']) .'</dd>';
             }
           }      
+        } else {
+          $output .= '<dt>'. l($item['link_title'], "node/add/individual/annotext/" . $gotIDs[$item['mlid']]) .'</dt>';
+            if(isset($gotIDs[$item['mlid']])) {
+              $result = db_query("SELECT * FROM {wisski_template} WHERE id = " . $gotIDs[$item['mlid']]);
+              $arr = db_fetch_array($result);
+  
+              $output .= '<dd>'. filter_xss_admin($arr['description']) .'</dd>';
+            }
         }
       }
 
